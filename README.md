@@ -14,8 +14,8 @@ It is a small, reproducible template-matching experiment for one question in doc
 unregistered versions received similar scores, so similarity alone was not enough to pick the template.
 
 - **Shortlisting:** on clean and mildly degraded scans, the correct template ranked first among 506 every time.
-- **The unregistered version:** a newer version that isn't in the library scored about like a known form
-  (MinHash similarity 0.88 vs 0.88, verify margin 0.08 vs 0.08).
+- **The unregistered version:** a newer version that isn't in the library scored about like a known form,
+  the mildly scanned current version (MinHash similarity 0.88 vs 0.88, verify margin 0.08 vs 0.08).
 - **With the printed-code check:** an extra check that requires strong content evidence and agreement with
   the form code printed on the page accepted **6 of 8 known forms, with 0 wrong accepts among these 10
   synthetic cases**. The rest went to a person.
@@ -42,7 +42,8 @@ number below comes from running this folder's code.
   - a beneficiary change form
 - 500 seeded lookalike DCPP/GRSP templates from other fictional clients.
 
-**The test forms:** ten were filled in, rendered, degraded to a set scan quality, and read back by OCR.
+**The test forms:** ten were filled in, rendered as page images at one of three scan qualities (clean, mild
+scan, poor fax), and read back by OCR.
 
 **What happened:**
 - **Shortlisting on readable scans:** for all 6 clean or mildly degraded forms whose template is in the
@@ -179,7 +180,7 @@ design tested in this PoC, not a requirement proven for every retrieval method.
   Long legal paragraphs are left out on purpose.
 - **OCR is the bottleneck on bad scans:** a stronger OCR engine, or asking for a rescan, would change the
   poor-fax rows.
-- **The combined rule needs a readable printed code.** Forms without one always go to review under this rule.
+- **The combined rule needs a readable printed code.** Forms without one are never accepted under this rule.
   The content gate is not a check that every page is present.
 - **Schema selection only:** the 4 schemas are synthetic and illustrative. The registry covers the 6
   hand-built templates. Nothing is extracted, and no form data is validated against a schema.

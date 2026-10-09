@@ -67,7 +67,7 @@
         <text class="h" x="34" y="20">Accept</text><text class="s" x="92" y="20">strong content + matching code</text></g>
       <g class="warning" transform="translate(600,276)"><rect class="chip" width="316" height="30" rx="6"/>
         <g transform="translate(16,15)"><circle class="dot" r="9"/><path class="glyph" d="M0 -4.2 V1"/><circle class="glyph-dot" cx="0" cy="3.7" r="1.2"/></g>
-        <text class="h" x="34" y="20">Review</text><text class="s" x="92" y="20">weak, conflicting or no code</text></g>
+        <text class="h" x="34" y="20">Review</text><text class="s" x="92" y="20">weak content or no matching code</text></g>
       <g class="neutral" transform="translate(600,316)"><rect class="chip" width="316" height="30" rx="6"/>
         <g transform="translate(16,15)"><circle class="dot" r="9"/><path class="glyph" d="M-4 0 H4"/></g>
         <text class="h" x="34" y="20">Unknown</text><text class="s" x="104" y="20">under half the labels found</text></g>

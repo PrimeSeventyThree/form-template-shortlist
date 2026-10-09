@@ -1,5 +1,5 @@
 """Fast checks (no OCR, a few seconds): determinism across machines and the matching rules.
-Run from the matcher folder:  python -m unittest discover -s tests -v
+Run from the repository root:  python -m unittest discover -s tests -v
 """
 import hashlib, json, sys, unittest
 from pathlib import Path

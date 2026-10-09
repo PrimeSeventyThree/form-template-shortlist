@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import shortlist  # noqa: E402
+import forms, shortlist  # noqa: E402
 
 LABELS = {
     "q01-current": "Current version", "q02-current-mild-scan": "Current version, mild scan",
@@ -77,7 +77,7 @@ def results_svg(results):
     h = top + row * len(results) + 74
     cols = (24, 300, 506, 712)
     body = [f'<text class="title" x="24" y="34">Outcome per test form</text>',
-            f'<text class="sub" x="24" y="56">Library of 506 templates; thresholds fixed before the first run. '
+            f'<text class="sub" x="24" y="56">Library of {len(forms.LIBRARY)} templates; thresholds fixed before the first run. '
             f'"Person checks" is safe: the form goes to a human queue.</text>']
     for x, head in zip(cols, ("TEST FORM", "CORRECT TEMPLATE IN TOP 5", "MINHASH ALONE", "MINHASH + PRINTED CODE")):
         body.append(f'<text class="head" x="{x}" y="{top - 14}" letter-spacing=".04em">{head}</text>')

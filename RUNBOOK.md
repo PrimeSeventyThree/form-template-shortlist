@@ -128,8 +128,9 @@ On Windows PowerShell, use `-v "${PWD}/out:/matcher/out"`. The report and result
 - **contain.:** estimated share of the template's shingles found in the scan. Used only for the "unknown" test.
 - **verify:** score on the shingles that differ between the 5 candidates (0 to 1). Decides accept or review.
 - **margin:** the winner's verify score minus the runner-up's.
-- **printed codes / code status:** every form code read from the footers, and whether they `agree` with the
-  winner, `disagree`, `conflict` (different codes on different pages) or are `unreadable`.
+- **printed codes / code status:** every form code read from the footers, and their status: `agrees` or
+  `disagrees` with the winner, `conflict` (different codes on different pages), `unreadable` (none found), or
+  `not_compared` (a code but no readable content to compare it with).
 - **reason** for the combined decision: `code_agrees` (accepted), `below_accept_score`, `code_disagrees`,
   `code_conflict`, `code_unreadable`, `low_containment` (unknown) or `no_readable_text`. Decisions use
   unrounded scores; the report shows them rounded.
@@ -174,7 +175,8 @@ On Windows PowerShell, use `-v "${PWD}/out:/matcher/out"`. The report and result
 | `No matching distribution found for numpy==2.5.3`, or pip refuses rapidocr-onnxruntime | Wrong Python version: create the venv with Python 3.12 (`python3.12 -m venv .venv`; check with `.venv/bin/python --version`) |
 | `ModuleNotFoundError: forms` | Run from the repository root, or call `python -I /path/to/run.py` |
 | A determinism test fails | Different package versions than `requirements.txt` (check `pip freeze`), or the library/rendering code changed. Reinstall into a fresh venv |
-| Full run very slow (over 10 minutes) | OCR on a slow CPU. Use `--reuse-ocr` for re-scoring; the first run must OCR about 25 pages |
+| Full run very slow (over 10 minutes) | OCR on a slow CPU. Use `--reuse-ocr` for re-scoring; the first run must OCR 27 pages |
+| `SchemaLookupError: invalid_registry` when `run.py` starts | `data/registry.json` is unreadable, or has an incomplete entry or a duplicate `template_id`. Fix the file |
 | `schema: ERROR missing_mapping` (or `schema_file_missing`, `schema_invalid_json`, `schema_not_object`, `schema_id_mismatch`) | An accepted template has no registry entry, or its schema file is missing or invalid. Fix `data/registry.json` or the file under `data/schemas/` (see section 7) |
 | Exit code 1 | A test case didn't get its intended decision, a form was accepted as the wrong template, or an accepted form's schema couldn't be selected. The last lines name the cases; see their blocks in `out/report.txt` (marked `NOT AS INTENDED`) |
 
