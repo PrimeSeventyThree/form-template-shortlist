@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 420" width="940" height="420" role="img" aria-label="How the shortlist works">
+  <title>How the shortlist works</title>
+  <style>
+    svg { --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781; --axis:#a8a79f; --box:#f1f0ec;
+          --series-1:#2a78d6; --good:#0ca30c; --warning:#fab219;
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      svg { --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --axis:#6b6a64; --box:#262624; --series-1:#3987e5; } }
+    .bg { fill: var(--surface); }
+    .box { fill: var(--box); stroke: var(--axis); stroke-width: 1.2; }
+    .box-key { fill: var(--box); stroke: var(--series-1); stroke-width: 2; }
+    .h { font-size: 14px; font-weight: 600; fill: var(--ink); }
+    .s { font-size: 12px; fill: var(--ink-2); }
+    .lane { font-size: 11px; font-weight: 600; letter-spacing: .06em; fill: var(--muted); }
+    .flow { stroke: var(--axis); stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+    .arrowhead { fill: var(--axis); }
+    .good { --s: var(--good); } .warning { --s: var(--warning); } .neutral { --s: var(--muted); }
+    .chip { fill: var(--s); fill-opacity: .14; stroke: var(--s); stroke-width: 1.5; }
+    .dot { fill: var(--s); } .glyph { stroke: #ffffff; stroke-width: 2; fill: none; stroke-linecap: round; }
+    .warning .glyph { stroke: #0b0b0b; } .warning .glyph-dot { fill: #0b0b0b; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrowhead" d="M0 0 L10 5 L0 10 z"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="940" height="420" rx="12"/>
+
+  <g id="retrieval">
+    <text class="lane" x="24" y="30">1 · RETRIEVAL: FIND CANDIDATES</text>
+    <g id="template-lane">
+      <rect class="box" x="24" y="44" width="200" height="56" rx="8"/>
+      <text class="h" x="38" y="67">Blank form</text><text class="s" x="38" y="86">label text, once per template</text>
+      <rect class="box" x="264" y="44" width="200" height="56" rx="8"/>
+      <text class="h" x="278" y="67">Shingles + MinHash</text><text class="s" x="278" y="86">128 numbers per template</text>
+      <rect class="box" x="504" y="44" width="160" height="56" rx="8"/>
+      <text class="h" x="518" y="67">Library</text><text class="s" x="518" y="86">506 signatures</text>
+      <path class="flow" d="M224 72 H262"/><path class="flow" d="M464 72 H502"/>
+    </g>
+    <g id="scan-lane">
+      <rect class="box" x="24" y="124" width="200" height="56" rx="8"/>
+      <text class="h" x="38" y="147">Scanned form</text><text class="s" x="38" y="166">each incoming document</text>
+      <rect class="box" x="264" y="124" width="200" height="56" rx="8"/>
+      <text class="h" x="278" y="147">OCR</text><text class="s" x="278" y="166">local model, no network</text>
+      <rect class="box" x="504" y="124" width="160" height="56" rx="8"/>
+      <text class="h" x="518" y="147">Shingles + MinHash</text><text class="s" x="518" y="166">same recipe</text>
+      <path class="flow" d="M224 152 H262"/><path class="flow" d="M464 152 H502"/>
+    </g>
+    <g id="shortlist">
+      <rect class="box-key" x="704" y="84" width="212" height="56" rx="8"/>
+      <text class="h" x="718" y="107">Shortlist: top 5</text><text class="s" x="718" y="126">compare with every signature</text>
+      <path class="flow" d="M664 72 H684 V100 H702"/><path class="flow" d="M664 152 H684 V124 H702"/>
+    </g>
+  </g>
+
+  <g id="decision">
+    <text class="lane" x="24" y="230">2 · DECISION: EXACT CHECKS</text>
+    <path class="flow" d="M810 140 V204 H244 V242"/>
+    <rect class="box" x="24" y="244" width="240" height="56" rx="8"/>
+    <text class="h" x="38" y="267">Verify (score ≥ 0.75)</text><text class="s" x="38" y="286">labels that differ between the 5</text>
+    <rect class="box" x="304" y="244" width="240" height="56" rx="8"/>
+    <text class="h" x="318" y="267">Printed form code</text><text class="s" x="318" y="286">all codes agree with the winner</text>
+    <path class="flow" d="M264 272 H302"/>
+    <g id="outcomes">
+      <g class="good" transform="translate(600,236)"><rect class="chip" width="316" height="30" rx="6"/>
+        <g transform="translate(16,15)"><circle class="dot" r="9"/><path class="glyph" d="M-4 0.5 L-1.2 3.2 L4 -2.8"/></g>
+        <text class="h" x="34" y="20">Accept</text><text class="s" x="92" y="20">strong content + matching code</text></g>
+      <g class="warning" transform="translate(600,276)"><rect class="chip" width="316" height="30" rx="6"/>
+        <g transform="translate(16,15)"><circle class="dot" r="9"/><path class="glyph" d="M0 -4.2 V1"/><circle class="glyph-dot" cx="0" cy="3.7" r="1.2"/></g>
+        <text class="h" x="34" y="20">Review</text><text class="s" x="92" y="20">weak, conflicting or no code</text></g>
+      <g class="neutral" transform="translate(600,316)"><rect class="chip" width="316" height="30" rx="6"/>
+        <g transform="translate(16,15)"><circle class="dot" r="9"/><path class="glyph" d="M-4 0 H4"/></g>
+        <text class="h" x="34" y="20">Unknown</text><text class="s" x="104" y="20">under half the labels found</text></g>
+      <path class="flow" d="M544 272 H570 V251 H598"/><path class="flow" d="M570 272 V291 H598"/><path class="flow" d="M570 291 V331 H598"/>
+    </g>
+  </g>
+
+  <text class="s" x="24" y="388">In these tests, retrieval found the right candidates on readable scans, but near-identical known and</text>
+  <text class="s" x="24" y="406">unregistered versions scored alike, so this design adds exact checks before accepting a template.</text>
+</svg>
