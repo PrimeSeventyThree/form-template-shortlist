@@ -20,12 +20,13 @@ unregistered versions received similar scores, so similarity alone was not enoug
   the form code printed on the page accepted **6 of 8 known forms, with 0 wrong accepts among these 10
   synthetic cases**. The rest went to a person.
 
-The PoC returns a **template identifier** (for example `K41M2.01 DCPP E-07-25`). It doesn't include a
-JSON-schema registry. In a real integration, each registered template ID would map to its schema. All data is
-synthetic (see [Data and privacy](#data-and-privacy)), and every number below comes from running this folder's
-code.
+The PoC covers the full path from **scanned form to verified template to JSON schema**. For an accepted match
+it returns the template identifier (for example `K41M2.01 DCPP E-07-25`) and the schema that a small local
+registry maps it to (`dcpp-enrolment/2025-07`, `schemas/dcpp-enrolment-2025-07.json`). It stops at selecting the
+schema; it doesn't extract data. All data is synthetic (see [Data and privacy](#data-and-privacy)), and every
+number below comes from running this folder's code.
 
-![How the shortlist works: blank-form label text and OCR'd scans are turned into MinHash signatures; the scan is compared with every template to keep the top 5; exact checks (distinguishing labels with a minimum score, then the printed form code) decide accept, review or unknown](docs/pipeline.svg)
+![How the shortlist works: blank-form label text and OCR'd scans are turned into MinHash signatures; the scan is compared with every template to keep the top 5; exact checks (distinguishing labels with a minimum score, then the printed form code) decide accept, review or unknown; an accepted template is looked up in the schema registry](docs/pipeline.svg)
 
 ## Results
 
@@ -63,6 +64,19 @@ code.
 - **Poor fax quality is where it broke.** OCR recovered under a fifth of the labels, the correct template
   dropped out of the shortlist, and no code was readable. Those forms went to a person, which is safe but not
   useful.
+
+**Schema selected for each accepted form** (from `out/report.txt`). Several templates share one schema:
+
+| Test form | Accepted template | Schema ID | Schema file |
+|---|---|---|---|
+| Current version (clean, mild scan) | `K41M2.01 DCPP E-07-25` | `dcpp-enrolment/2025-07` | `schemas/dcpp-enrolment-2025-07.json` |
+| Same client, plan 02 | `K41M2.02 DCPP E-07-25` | `dcpp-enrolment/2025-07` | `schemas/dcpp-enrolment-2025-07.json` |
+| Other client, same funds | `K77B3.01 DCPP E-07-25` | `dcpp-enrolment/2025-07` | `schemas/dcpp-enrolment-2025-07.json` |
+| Older version | `K41M2.01 DCPP E-01-24` | `dcpp-enrolment/2024-01` | `schemas/dcpp-enrolment-2024-01.json` |
+| Same client, Group RRSP | `K41M2.01 GRSP E-07-25` | `grsp-enrolment/2025-07` | `schemas/grsp-enrolment-2025-07.json` |
+
+The poor-fax scans, the unregistered version and the dental claim weren't accepted, so no schema was selected
+for them.
 
 ![Verify score of the top candidate and the runner-up for each test form, with the 0.75 accept threshold](docs/margins.svg)
 
@@ -107,6 +121,17 @@ the text.*
 
    The code pattern fits this synthetic library's codes. It isn't a general parser for any insurer's
    identifiers.
+6. **Schema selection.** For an accepted match, a local registry ([data/registry.json](data/registry.json))
+   maps the template ID, which includes its edition, to a schema ID and a schema file under
+   [data/schemas/](data/schemas/).
+   - Several templates can share a schema: the current DCPP edition, plan 02 and the other client all use
+     `dcpp-enrolment/2025-07`.
+   - Review and unknown results select no schema.
+   - A missing registry entry, or a schema file that is missing, isn't valid JSON, isn't an object schema, or
+     whose `$id` doesn't match the registry, raises an explicit error. `run.py` records it and exits with an
+     error.
+   - Only the 6 hand-built templates are registered. The 500 lookalikes are retrieval distractors, so
+     accepting one would be a `missing_mapping` error.
 
 There is no LLM in the loop. OCR is a local ONNX model ([RapidOCR](https://github.com/RapidAI/RapidOCR)), and
 similarity and decisions are plain deterministic code. With Python 3.12 and the pinned packages, results and
@@ -156,7 +181,8 @@ design tested in this PoC, not a requirement proven for every retrieval method.
   poor-fax rows.
 - **The combined rule needs a readable printed code.** Forms without one always go to review under this rule.
   The content gate is not a check that every page is present.
-- **No schema lookup:** the output is a template ID; mapping it to a JSON schema is left to an integration.
+- **Schema selection only:** the 4 schemas are synthetic and illustrative. The registry covers the 6
+  hand-built templates. Nothing is extracted, and no form data is validated against a schema.
 - **Platform coverage:** verified on macOS x86_64 and Linux x86_64 (Docker) with Python 3.12. Windows and
   ARM haven't been run.
 
@@ -166,13 +192,13 @@ From this folder (the repository root):
 
 ```bash
 python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python -m unittest discover -s tests     # 17 fast checks, a few seconds, no OCR
+.venv/bin/python -m unittest discover -s tests     # 30 fast checks, a few seconds, no OCR
 .venv/bin/python -I run.py                         # full run, about 1.5 to 3 minutes
 .venv/bin/python -I make_figures.py                # rebuild the charts in docs/ from the run
 ```
 
-`run.py` exits with an error if any test case doesn't get its intended decision (`INTENDED` in `forms.py`)
-or if any form is accepted as the wrong template.
+`run.py` exits with an error if any test case doesn't get its intended decision (`INTENDED` in `forms.py`),
+if any form is accepted as the wrong template, or if an accepted form's schema can't be selected.
 
 Or with Docker, from the same folder: `docker build -t form-shortlist-poc . && docker run --rm form-shortlist-poc`.
 [RUNBOOK.md](RUNBOOK.md) covers setup on macOS, Linux and Windows, expected output, how to change the test
@@ -185,6 +211,7 @@ Everything in this repository is synthetic:
 - **Insurer:** "Example Life"
 - **Plan sponsors:** "Maple Example Corp." and "Birch Sample Holdings Ltd."
 - **Funds, form codes and the 500 lookalike clients:** fictional and generated.
+- **Schemas and the registry:** synthetic, written for this PoC.
 - **The test member:** placeholder values ("Jane Sample", SIN `000 000 000`, `jane.sample@example.com`,
   postal code `A1A 1A1`).
 
@@ -195,14 +222,18 @@ results.
 
 | Path | What it is |
 |---|---|
-| `run.py` | Runs everything; writes `out/report.txt` and `out/results.json`; checks intended decisions |
+| `run.py` | Runs everything; writes `out/report.txt` and `out/results.json`; checks intended decisions and schema selection |
 | `forms.py` | Template library, test forms and their intended decisions, page rendering, scan degradation |
 | `shortlist.py` | Shingles, MinHash, verification, decision rules, printed-code checks |
+| `registry.py` | Template-to-schema registry: lookup, shared schemas, explicit errors |
 | `ocr.py` | RapidOCR wrapper (models ship inside the pip package) |
 | `make_figures.py` | Builds `docs/results.svg`, `docs/margins.svg` and `docs/scan-quality.png` from a run |
 | `docs/` | Figures used in this README (`pipeline.svg` is hand-drawn) |
 | `tests/test_shortlist.py` | Fast checks: determinism, decision rules, empty input, code conflicts (no OCR) |
+| `tests/test_registry.py` | Schema selection: lookups, shared schemas, no schema without an accept, missing mappings, bad files |
 | `data/funds.json` | The fictional fund list used on the forms |
+| `data/registry.json` | Template ID to schema ID and file |
+| `data/schemas/` | Four synthetic JSON Schema files |
 | `requirements.txt` | Exact package versions |
 | `Dockerfile` | Optional Linux environment (base image pinned by digest) |
 | `RUNBOOK.md` | Setup, run, verify, change, troubleshoot |

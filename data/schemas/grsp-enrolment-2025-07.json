@@ -1,0 +1,337 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "grsp-enrolment/2025-07",
+ "title": "Group RRSP enrolment, edition E-07-25",
+ "description": "Synthetic schema for the shortlist PoC (fictional form family).",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "plan_sponsor",
+  "member",
+  "investment_allocations"
+ ],
+ "properties": {
+  "plan_sponsor": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "client_id",
+    "plan",
+    "contract_number"
+   ],
+   "properties": {
+    "name": {
+     "type": "string"
+    },
+    "client_id": {
+     "type": "string"
+    },
+    "plan": {
+     "type": "string"
+    },
+    "contract_number": {
+     "type": "string"
+    },
+    "payroll_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "member": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "first_name",
+    "last_name",
+    "date_of_birth",
+    "social_insurance_number"
+   ],
+   "properties": {
+    "first_name": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "middle_initial": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "last_name": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "date_of_birth": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "social_insurance_number": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "member_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "address": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "apartment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "city": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "province": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "postal_code": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "telephone_day": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "telephone_evening": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "email": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "date_of_enrolment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "date_of_employment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "province_of_employment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "beneficiaries": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "first_name",
+     "last_name"
+    ],
+    "properties": {
+     "first_name": {
+      "type": "string"
+     },
+     "middle_initial": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "last_name": {
+      "type": "string"
+     },
+     "relationship": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "date_of_birth": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^\\d{2}-\\d{2}-\\d{4}$"
+     },
+     "percentage_of_benefits": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 100
+     }
+    }
+   }
+  },
+  "contingent_beneficiaries": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "first_name",
+     "last_name"
+    ],
+    "properties": {
+     "first_name": {
+      "type": "string"
+     },
+     "middle_initial": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "last_name": {
+      "type": "string"
+     },
+     "relationship": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "date_of_birth": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^\\d{2}-\\d{2}-\\d{4}$"
+     },
+     "percentage_of_benefits": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 100
+     }
+    }
+   }
+  },
+  "contributions": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "additional_percent": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "minimum": 0
+    }
+   }
+  },
+  "investment_allocations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "fund_code",
+     "percent"
+    ],
+    "properties": {
+     "fund_code": {
+      "enum": [
+       "GRT",
+       "G25",
+       "G30",
+       "G35",
+       "G40",
+       "G45",
+       "G50",
+       "G55",
+       "G60",
+       "G65",
+       "BRT",
+       "B25",
+       "B30",
+       "B35",
+       "B40",
+       "B45",
+       "B50",
+       "B55",
+       "B60",
+       "B65",
+       "CRT",
+       "C25",
+       "C30",
+       "C35",
+       "C40",
+       "C45",
+       "C50",
+       "C55",
+       "C60",
+       "C65",
+       "DIA",
+       "G01",
+       "G03",
+       "G05",
+       "MMF",
+       "CBI",
+       "CBF",
+       "BLF",
+       "CEF",
+       "CEI",
+       "CGF",
+       "USE",
+       "IEI",
+       "USI",
+       "GEF",
+       "INF"
+      ]
+     },
+     "percent": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+     }
+    }
+   }
+  },
+  "marketing_consent_refused": {
+   "type": "boolean"
+  },
+  "signature_present": {
+   "type": "boolean"
+  }
+ }
+}

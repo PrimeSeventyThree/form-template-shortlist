@@ -1,0 +1,35 @@
+{
+ "_comment": "Maps each registered template (ID includes its edition, e.g. E-07-25) to a schema file under data/. Several templates share one schema. The 500 generated lookalike templates are retrieval distractors and are deliberately not registered.",
+ "templates": [
+  {
+   "template_id": "K41M2.01 DCPP E-07-25",
+   "schema_id": "dcpp-enrolment/2025-07",
+   "schema_path": "schemas/dcpp-enrolment-2025-07.json"
+  },
+  {
+   "template_id": "K41M2.02 DCPP E-07-25",
+   "schema_id": "dcpp-enrolment/2025-07",
+   "schema_path": "schemas/dcpp-enrolment-2025-07.json"
+  },
+  {
+   "template_id": "K77B3.01 DCPP E-07-25",
+   "schema_id": "dcpp-enrolment/2025-07",
+   "schema_path": "schemas/dcpp-enrolment-2025-07.json"
+  },
+  {
+   "template_id": "K41M2.01 DCPP E-01-24",
+   "schema_id": "dcpp-enrolment/2024-01",
+   "schema_path": "schemas/dcpp-enrolment-2024-01.json"
+  },
+  {
+   "template_id": "K41M2.01 GRSP E-07-25",
+   "schema_id": "grsp-enrolment/2025-07",
+   "schema_path": "schemas/grsp-enrolment-2025-07.json"
+  },
+  {
+   "template_id": "K41M2 BENCHG E-05-24",
+   "schema_id": "beneficiary-change/2024-05",
+   "schema_path": "schemas/beneficiary-change-2024-05.json"
+  }
+ ]
+}

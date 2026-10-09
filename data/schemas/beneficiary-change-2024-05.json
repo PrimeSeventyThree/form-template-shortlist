@@ -1,0 +1,227 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "beneficiary-change/2024-05",
+ "title": "Beneficiary change request, edition E-05-24",
+ "description": "Synthetic schema for the shortlist PoC (fictional form family).",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "client_id",
+  "member",
+  "beneficiaries"
+ ],
+ "properties": {
+  "client_id": {
+   "type": "string"
+  },
+  "member": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "first_name",
+    "last_name",
+    "date_of_birth",
+    "social_insurance_number"
+   ],
+   "properties": {
+    "first_name": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "middle_initial": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "last_name": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "date_of_birth": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "social_insurance_number": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "member_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "address": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "apartment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "city": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "province": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "postal_code": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "telephone_day": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "telephone_evening": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "email": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "date_of_enrolment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "date_of_employment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "province_of_employment": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   }
+  },
+  "beneficiaries": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "first_name",
+     "last_name"
+    ],
+    "properties": {
+     "first_name": {
+      "type": "string"
+     },
+     "middle_initial": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "last_name": {
+      "type": "string"
+     },
+     "relationship": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "date_of_birth": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^\\d{2}-\\d{2}-\\d{4}$"
+     },
+     "percentage_of_benefits": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 100
+     }
+    }
+   }
+  },
+  "contingent_beneficiaries": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "first_name",
+     "last_name"
+    ],
+    "properties": {
+     "first_name": {
+      "type": "string"
+     },
+     "middle_initial": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "last_name": {
+      "type": "string"
+     },
+     "relationship": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "date_of_birth": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^\\d{2}-\\d{2}-\\d{4}$"
+     },
+     "percentage_of_benefits": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "minimum": 0,
+      "maximum": 100
+     }
+    }
+   }
+  },
+  "signature_present": {
+   "type": "boolean"
+  }
+ }
+}
